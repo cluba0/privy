@@ -35,6 +35,7 @@ export default function DashboardPage() {
     unlinkTwitter,
     linkDiscord,
     unlinkDiscord,
+    exportWallet,
   } = usePrivy();
 
   useEffect(() => {
@@ -68,6 +69,12 @@ export default function DashboardPage() {
   const handleClick = () => {
     signMessage("hello");
   };
+
+  const isAuthenticated = ready && authenticated;
+  // Check that your user has an embedded wallet
+  const hasEmbeddedWallet = !!user?.linkedAccounts.find(
+    (account) => account.type === "wallet" && account.walletClient === "privy"
+  );
 
   return (
     <>
@@ -231,6 +238,12 @@ export default function DashboardPage() {
                 Sign message
               </button>
             </div>
+            <button
+              onClick={exportWallet}
+              disabled={!isAuthenticated || !hasEmbeddedWallet}
+            >
+              Export my wallet
+            </button>
 
             <p className="mt-6 font-bold uppercase text-sm text-gray-600">
               User object
